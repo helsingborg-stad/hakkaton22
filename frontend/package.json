@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "dayjs": "^1.11.3",
     "next": "12.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0"
@@ -42,7 +43,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-emoji-conventional"
+      "path": "./frontend/node_modules/cz-emoji-conventional"
     }
   }
 }

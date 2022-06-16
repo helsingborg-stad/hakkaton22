@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import Head from "next/head";
-import Header from "../components/header";
 import { Checklist } from "../components/Checklist";
+import Layout from "../components/Layout";
 
 const items = [
   {
@@ -18,7 +17,7 @@ const items = [
     checked: false,
     point: 10,
     tags: ["Kultur"],
-    frequency: "MONTH"
+    frequency: "återkommande dagligen"
   },
   {
     id: "3",
@@ -26,45 +25,62 @@ const items = [
     checked: false,
     point: 15,
     tags: ["Tag1", "Tag2"],
-    frequency: "DAY"
+    frequency: "återkommande årligen"
+  },
+  {
+    id: "4",
+    title: "Checklist item 4",
+    checked: false,
+    point: 12,
+    tags: ["Hälsa"],
+    frequency: "återkommande dagligen"
   }
 ];
 
+const user = {
+  firstName: "Petter",
+  lastName: "Petterson",
+  district: "Mariapark",
+};
+
 export default function Home(): JSX.Element {
   const [checklistItems, setChecklistItems] = useState(items);
+  const points = checklistItems.reduce(
+    (acc, item) => (item.checked ? acc + item.point : acc),
+    0
+  );
 
   return (
-    <div className="bg-green-background">
-      <Head>
-        <title>Invånarpoängen</title>
-        <meta name="description" content="Invånarpoängen" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className="h-screen">
-        <Header />
-
-        <div className="m-4 rounded-xl bg-white shadow-md">
-
-          <div className="border-b-4 border-green p-3">
-            <h2 className="text-md font-semibold text-neutral-800">
-              Tillgängliga aktiviteter
-            </h2>
-          </div>
-
-          <div className="p-4">
-            <Checklist data={checklistItems} setData={setChecklistItems}>
-              {checklistItems.map((checklistItem) => (
-                <Checklist.Item
-                  {...checklistItem}
-                  key={checklistItem.id}
-                />
-              ))}
-            </Checklist>
-          </div>
-
+    <Layout>
+      <div className="m-4 rounded-xl bg-white shadow-md flex flex-row justify-between p-4 text-neutral-800 items-center">
+        <div>
+          <p className="text-xl font-semibold">{user.firstName}</p>
+          <p>{user.district}</p>
         </div>
-      </main>
-    </div>
+        <p className="text-xs font-semibold">
+          MINA POÄNG: {points}p
+        </p>
+      </div>
+
+      <div className="m-4 rounded-xl bg-white shadow-md">
+
+        <div className="border-b-4 border-green p-3">
+          <h2 className="text-md font-semibold text-neutral-800">
+            Tillgängliga aktiviteter
+          </h2>
+        </div>
+
+        <div className="p-4">
+          <Checklist data={checklistItems} setData={setChecklistItems}>
+            {checklistItems.map((checklistItem) => (
+              <Checklist.Item
+                {...checklistItem}
+                key={checklistItem.id}
+              />
+            ))}
+          </Checklist>
+        </div>
+      </div>
+    </Layout >
   );
 }

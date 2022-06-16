@@ -34,7 +34,7 @@ export function MyStack({ stack }: StackContext) {
       },
     },
     dataSources: {
-      events: "functions/main.handler",
+      events: "functions/events.handler",
       activities: "functions/activities.handler",
       rewards: "functions/rewards.handler",
     },

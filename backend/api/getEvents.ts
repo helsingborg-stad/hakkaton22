@@ -1,6 +1,4 @@
-import { DynamoDB } from "aws-sdk";
-
-const dynamoDb = new DynamoDB.DocumentClient();
+import { dynamoDb } from "./libs";
 
 export default async function getEvents(): Promise<Record<string, unknown>[] | undefined> {
   const params = {

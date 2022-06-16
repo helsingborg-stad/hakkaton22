@@ -1,9 +1,7 @@
-import { DynamoDB } from "aws-sdk";
+import { dynamoDb } from "./libs";
 import getEvents from "./getEvents";
 import Event from "./types/event";
 import Activity from "./types/activity";
-
-const dynamoDb = new DynamoDB.DocumentClient();
 
 async function getActivityList(): Promise<Activity[]> {
 

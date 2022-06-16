@@ -1,13 +1,13 @@
 import Activity from "../types/activity";
 import getAllActivities from "../getAllActivities";
+import doActivity from "../doActivity";
 
 type AppSyncEvent = {
   info: {
     fieldName: string;
   };
   arguments: {
-    activity: Activity;
-    activityId: string;
+    activityName: string;
   };
 };
 
@@ -17,6 +17,8 @@ export async function handler(
   switch (appSyncEvent.info.fieldName) {
     case "getAllActivities":
       return await getAllActivities();
+    case "doActivity":
+      return await doActivity(appSyncEvent.arguments.activityName);
     default:
       return [];
   }

@@ -2,7 +2,7 @@ type Activity = {
   id: string;
   name: string;
   points: number;
-  date: string;
+  frequency: string;
 }
 
 export default Activity;

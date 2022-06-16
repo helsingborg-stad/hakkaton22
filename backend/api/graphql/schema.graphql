@@ -18,14 +18,6 @@ type Event {
   date: String!
 }
 
-input ActivityInput {
-  name: String!
-}
-
-input RewardInput {
-  name: String!
-}
-
 type Query {
   getEvents: [Event]
   getAllActivities: [Activity]
@@ -33,6 +25,6 @@ type Query {
 }
 
 type Mutation {
-  doActivity(activityName: ActivityInput!): [Event]
-  redeemReward(rewardName: RewardInput!): [Event]
+  doActivity(activityName: String!): [Event]
+  redeemReward(rewardName: String!): [Event]
 }

@@ -1,4 +1,4 @@
-import Activity from "../activity";
+import Activity from "../types/activity";
 import getAllActivities from "../getAllActivities";
 
 type AppSyncEvent = {

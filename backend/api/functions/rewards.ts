@@ -1,4 +1,4 @@
-import Reward from "../reward";
+import Reward from "../types/reward";
 import getAllRewards from "../getAllRewards";
 
 type AppSyncEvent = {

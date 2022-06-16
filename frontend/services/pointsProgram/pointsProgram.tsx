@@ -1,4 +1,10 @@
-import { createContext, useEffect, useState } from "react";
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { Timestamp } from "../../utils/misc";
 
 export interface Event {
@@ -54,41 +60,54 @@ interface Props {
   provider: PointsProgramActions;
 }
 
+async function doActivity(
+  activityName: string,
+  provider: PointsProgramActions,
+  setProgramState: Dispatch<SetStateAction<PointsProgramState>>
+): Promise<void> {
+  setProgramState((current) => ({ ...current, isLoading: true }));
+  const events = await provider.doActivity(activityName);
+  setProgramState((current) => ({ ...current, isLoading: false, events }));
+}
+
+async function redeemReward(
+  rewardName: string,
+  provider: PointsProgramActions,
+  setProgramState: Dispatch<SetStateAction<PointsProgramState>>
+): Promise<void> {
+  setProgramState((current) => ({ ...current, isLoading: true }));
+  const rewards = await provider.redeemReward(rewardName);
+  setProgramState((current) => ({ ...current, isLoading: false, rewards }));
+}
+
 export default function PointsProgramProvider({
   children,
   provider,
 }: Props): JSX.Element {
+  console.log("pointsProgram");
   const [programState, setProgramState] = useState(defaultState);
-
-  const doActivity = async (activityName: string) => {
-    setProgramState((current) => ({ ...current, isLoading: true }));
-    const events = await provider.doActivity(activityName);
-    setProgramState((current) => ({ ...current, isLoading: false, events }));
-  };
-
-  const redeemReward = async (rewardName: string) => {
-    setProgramState((current) => ({ ...current, isLoading: true }));
-    const rewards = await provider.redeemReward(rewardName);
-    setProgramState((current) => ({ ...current, isLoading: false, rewards }));
-  };
 
   // fetch initial data
   useEffect(() => {
     void (async () => {
+      console.log("(PointsProgramProvider) fetching initial data");
       const events = await provider.getEvents();
       const activities = await provider.getActivities();
-      const rewards = await provider.getEvents();
+      const rewards = await provider.getRewards();
+      console.log("(PointsProgramProvider) data fetch done");
 
       setProgramState({
         isLoading: false,
         events,
         activities,
         rewards,
-        doActivity,
-        redeemReward,
+        doActivity: (activityName) =>
+          doActivity(activityName, provider, setProgramState),
+        redeemReward: (rewardName) =>
+          redeemReward(rewardName, provider, setProgramState),
       });
     })();
-  });
+  }, [provider]);
 
   return (
     <PointsProgramContext.Provider value={programState}>

@@ -1,0 +1,38 @@
+type Reward {
+  id: ID!
+  name: String!
+  points: Int!
+}
+
+type Activity {
+  id: ID!
+  name: String!
+  points: Int!
+  frequency: String!
+}
+
+type Event {
+  id: ID!
+  name: String!
+  points: Int!
+  date: String!
+}
+
+input ActivityInput {
+  name: String!
+}
+
+input RewardInput {
+  name: String!
+}
+
+type Query {
+  getEvents: [Event]
+  getAllActivities: [Activity]
+  getAllRewards: [Reward]
+}
+
+type Mutation {
+  doActivity(activityName: ActivityInput!): [Event]
+  redeemReward(rewardName: RewardInput!): [Event]
+}

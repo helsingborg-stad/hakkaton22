@@ -7,6 +7,7 @@ export function MyStack({ stack }: StackContext) {
     },
     primaryIndex: { partitionKey: "id" },
   });
+  eventsTable.attachPermissions(['lambda'])
 
   const activitiesTable = new Table(stack, "Activities", {
     fields: {
@@ -14,6 +15,7 @@ export function MyStack({ stack }: StackContext) {
     },
     primaryIndex: { partitionKey: "id" },
   });
+  activitiesTable.attachPermissions(['lambda'])
 
   const rewardsTable = new Table(stack, "Rewards", {
     fields: {
@@ -21,6 +23,7 @@ export function MyStack({ stack }: StackContext) {
     },
     primaryIndex: { partitionKey: "id" },
   });
+  rewardsTable.attachPermissions(['lambda'])
 
   const api = new AppSyncApi(stack, "AppSyncApi", {
     schema: "api/graphql/schema.graphql",

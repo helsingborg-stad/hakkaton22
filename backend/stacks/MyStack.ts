@@ -50,7 +50,7 @@ export function MyStack({ stack }: StackContext) {
     },
   });
 
-  api.attachPermissions([eventsTable]);
+  api.attachPermissions(['dynamodb']);
 
   stack.addOutputs({
     ApiId: api.apiId,

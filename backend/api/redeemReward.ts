@@ -15,7 +15,7 @@ export default async function redeemReward(rewardName: string): Promise<Event[]>
     Item: {
       id: dateNow.toString(),
       name: reward.name,
-      points: reward.points,
+      points: -reward.points,
       date: new Date(dateNow).toISOString(),
     },
   };

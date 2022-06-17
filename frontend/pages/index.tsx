@@ -21,18 +21,18 @@ const items = [
   },
   {
     id: "3",
-    title: "Checklist item 3",
+    title: "Lämna skräp på ÅVC",
     checked: false,
     point: 15,
-    tags: ["Tag1", "Tag2"],
+    tags: ["Miljö"],
     frequency: "återkommande årligen"
   },
   {
     id: "4",
-    title: "Checklist item 4",
+    title: "Åk kollektivt",
     checked: false,
     point: 12,
-    tags: ["Hälsa"],
+    tags: ["Kategori"],
     frequency: "återkommande dagligen"
   }
 ];

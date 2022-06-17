@@ -1,27 +1,14 @@
-import { dynamoDb } from "./libs";
+import { dynamoDb, getByName } from "./libs";
 import getEvents from "./getEvents";
+import getAllRewards from "./getAllRewards";
 import Event from "./types/event";
 import Reward from "./types/reward";
-
-async function getRewardList(): Promise<Reward[]> {
-
-  const scanParams = {
-    TableName: process.env.ACTIVITIES_TABLE as string,
-  };
-
-  const result = await dynamoDb.scan(scanParams).promise();
-  return result.Items as Reward[]
-}
-
-function getRewardByName(name: string, list: Reward[]): Reward {
-  return list.find(item => item.name === name) as Reward;
-}
 
 export default async function redeemReward(rewardName: string): Promise<Event[]> {
 
   const dateNow = Date.now();
-  const rewardList = await getRewardList();
-  const reward = getRewardByName(rewardName, rewardList);
+  const rewardList = await getAllRewards() as Reward[];
+  const reward = getByName(rewardName, rewardList) as Reward;
 
   const putEventParams = {
     TableName: process.env.EVENTS_TABLE as string,

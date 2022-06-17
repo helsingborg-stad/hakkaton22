@@ -1,27 +1,14 @@
-import { dynamoDb } from "./libs";
+import { dynamoDb, getByName } from "./libs";
 import getEvents from "./getEvents";
+import getAllActivities from "./getAllActivities";
 import Event from "./types/event";
 import Activity from "./types/activity";
-
-async function getActivityList(): Promise<Activity[]> {
-
-  const scanParams = {
-    TableName: process.env.ACTIVITIES_TABLE as string,
-  };
-
-  const result = await dynamoDb.scan(scanParams).promise();
-  return result.Items as Activity[]
-}
-
-function getActivityByName(name: string, list: Activity[]): Activity {
-  return list.find(item => item.name === name) as Activity;
-}
 
 export default async function doActivity(activityName: string): Promise<Event[]> {
 
   const dateNow = Date.now();
-  const activityList = await getActivityList();
-  const activity = getActivityByName(activityName, activityList);
+  const activityList = await getAllActivities() as Activity[];
+  const activity = getByName(activityName, activityList) as Activity;
 
   const putEventParams = {
     TableName: process.env.EVENTS_TABLE as string,

@@ -1,6 +1,5 @@
 import React from "react";
-import { ChecklistProvider } from "./ChecklistContext";
-import { ChecklistItem, ItemInterface } from "./ChecklistItem";
+import { ChecklistItem } from "./ChecklistItem";
 
 interface BodyProps {
   children: React.ReactNode;
@@ -12,30 +11,13 @@ function Body({ children }: BodyProps): JSX.Element {
 
 interface ChecklistProps {
   children: React.ReactNode;
-  data: ItemInterface[];
-  setData: (value: ItemInterface[]) => void;
 }
 
 function Checklist({
-  data,
-  setData,
   children,
 }: ChecklistProps) {
-  const checkItem = (id: string) => {
-    const newData = data.map((item: ItemInterface) => {
-      if (item.id === id) {
-        return { ...item, checked: !item.checked };
-      }
-      return item;
-    });
-
-    setData(newData);
-  };
-
   return (
-    <ChecklistProvider value={{ checkItem }}>
-      <Body>{children}</Body>
-    </ChecklistProvider>
+    <Body>{children}</Body>
   );
 };
 

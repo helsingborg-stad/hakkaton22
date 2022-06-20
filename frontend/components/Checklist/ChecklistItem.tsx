@@ -1,15 +1,15 @@
 import React from "react";
-import { useChecklistContext } from "./ChecklistContext";
 import Image from "next/image";
 
 
-export interface ItemInterface {
+export interface CheckListItemProps {
   id: string;
   title: string;
   checked: boolean;
   point: number;
   tags: string[];
   frequency: string;
+  onClickHandler: (id : string) => void
 }
 
 function ChecklistItem({
@@ -19,9 +19,8 @@ function ChecklistItem({
   point,
   tags,
   frequency,
-}: ItemInterface): JSX.Element {
-  const { checkItem } = useChecklistContext();
-
+  onClickHandler,
+}: CheckListItemProps): JSX.Element {
   if (checked) {
     return (
       <div
@@ -55,7 +54,7 @@ function ChecklistItem({
       className="flex flex-row justify-between items-center border-2 border-white rounded-xl p-4 bg-white
       drop-shadow-[0_1px_2px_rgba(0,0,0,0.25)]"
       key={id}
-      onClick={() => checkItem(id)}
+      onClick={() => onClickHandler(id)}
     >
       <div className="flex flex-col space-y-1">
         <h3 className="text-md text-neutral-800">

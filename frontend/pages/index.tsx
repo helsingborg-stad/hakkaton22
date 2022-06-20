@@ -1,41 +1,9 @@
 import React, { useState } from "react";
 import { Checklist } from "../components/Checklist";
 import Layout from "../components/Layout";
-
-const items = [
-  {
-    id: "1",
-    title: "Gå 10 000 steg",
-    checked: false,
-    point: 4,
-    tags: ["Hälsa & välbefinnande"],
-    frequency: "återkommande dagligen"
-  },
-  {
-    id: "2",
-    title: "Besök Dunkers kulturhus",
-    checked: false,
-    point: 10,
-    tags: ["Kultur"],
-    frequency: "återkommande dagligen"
-  },
-  {
-    id: "3",
-    title: "Lämna skräp på ÅVC",
-    checked: false,
-    point: 15,
-    tags: ["Miljö"],
-    frequency: "återkommande årligen"
-  },
-  {
-    id: "4",
-    title: "Åk kollektivt",
-    checked: false,
-    point: 12,
-    tags: ["Kategori"],
-    frequency: "återkommande dagligen"
-  }
-];
+import { useContext, useEffect } from "react";
+import { PointsProgramContext } from "../services/pointsProgram/PointsProgramContext";
+import { UserActivity } from "../services/pointsProgram/UserActivity";
 
 const user = {
   firstName: "Petter",
@@ -44,7 +12,48 @@ const user = {
 };
 
 export default function Home(): JSX.Element {
-  const [checklistItems, setChecklistItems] = useState(items);
+  const { queryUserActivities, registerUserActivity } =
+    useContext(PointsProgramContext);
+  const [isLoading, setLoading] = useState(true);
+  const [userActivities, setUserActivities] = useState<UserActivity[]>([]);
+
+  useEffect(() => {
+    setLoading(true);
+    queryUserActivities()
+      .then((activities) => {
+        setUserActivities(activities);
+        setLoading(false);
+      })
+      .catch((e) => setLoading(false) === null && console.error(e));
+  }, [queryUserActivities]);
+
+  const handleClickItem = (activityName: string) => {
+    [isLoading]
+      .filter((loading) => !loading)
+      .forEach(() => {
+        setLoading(true);
+        registerUserActivity(activityName)
+          .then(() => queryUserActivities())
+          .then((activities) => {
+            setUserActivities(activities);
+            setLoading(false);
+          })
+          .catch((e) => setLoading(false) === null && console.error(e));
+      });
+  };
+
+  const checklistItems = userActivities.map(
+    ({ name, points, isDone, frequency }) => ({
+      id: name,
+      title: name,
+      checked: isDone,
+      point: points,
+      frequency: frequency.toString(),
+      tags: [],
+      onClickHandler: !isDone ? handleClickItem : () => undefined,
+    })
+  );
+
   const points = checklistItems.reduce(
     (acc, item) => (item.checked ? acc + item.point : acc),
     0
@@ -57,13 +66,10 @@ export default function Home(): JSX.Element {
           <p className="text-xl font-semibold">{user.firstName}</p>
           <p>{user.district}</p>
         </div>
-        <p className="text-xs font-semibold">
-          MINA POÄNG: {points}p
-        </p>
+        <p className="text-xs font-semibold">MINA POÄNG: {points}p</p>
       </div>
 
       <div className="m-4 rounded-xl bg-white shadow-md">
-
         <div className="border-b-4 border-green p-3">
           <h2 className="text-md font-semibold text-neutral-800">
             Tillgängliga aktiviteter
@@ -71,16 +77,13 @@ export default function Home(): JSX.Element {
         </div>
 
         <div className="p-4">
-          <Checklist data={checklistItems} setData={setChecklistItems}>
+          <Checklist>
             {checklistItems.map((checklistItem) => (
-              <Checklist.Item
-                {...checklistItem}
-                key={checklistItem.id}
-              />
+              <Checklist.Item {...checklistItem} key={checklistItem.id} />
             ))}
           </Checklist>
         </div>
       </div>
-    </Layout >
+    </Layout>
   );
 }

@@ -3,15 +3,15 @@ import { PointsProgramContext } from "./PointsProgramContext";
 
 interface Props {
   children?: React.ReactNode;
-  pointsProgram: IPointsProgram;
+  provider: IPointsProgram;
 }
 
 export default function PointsProgramProvider({
   children,
-  pointsProgram,
+  provider,
 }: Props): JSX.Element {
   return (
-    <PointsProgramContext.Provider value={{ ...pointsProgram }}>
+    <PointsProgramContext.Provider value={{ ...provider }}>
       {children}
     </PointsProgramContext.Provider>
   );

@@ -5,7 +5,7 @@ import { localPointsProgram } from "../services/pointsProgram/local/localPointsP
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <PointsProgramProvider pointsProgram={localPointsProgram()}>
+    <PointsProgramProvider provider={localPointsProgram()}>
       <Component {...pageProps} />
     </PointsProgramProvider>
   );

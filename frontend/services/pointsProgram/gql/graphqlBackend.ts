@@ -37,9 +37,7 @@ const GQL_GET_REWARDS = gql`
   }
 `;
 
-import { PointsProgramActions } from "./pointsProgram";
-
-const Actions: PointsProgramActions = {
+const Actions = {
   async getEvents() {
     const res = await client.query({ query: GQL_GET_EVENTS });
     return res.data.getEvents;
